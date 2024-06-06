@@ -13,7 +13,7 @@ Prerequisites: <br>
 oc create -f enablesctp.yaml
 
 ```
-Wait for machine-config to be applied on all worker nodes and all worker nodes come back into ready state. Check with; 
+Wait for machine-config to be applied on all worker nodes and all worker nodes return to ready state. Check with; 
 ```
 oc get nodes
 ```
@@ -24,8 +24,9 @@ oc get nodes
 ![alt text](https://raw.githubusercontent.com/fenar/cnvopen5gcore/main/pics/Open5GCoreServiceMesh2.png)<br>
 
 ----
-(2) Provision user equipment (UE) IMSI (see ueransim/ueransim-ue-configmap.yaml, default IMSI is 208930000000001) to 5gcore so your UE registration (i.e. running ueransim UE mode) will be allowed.
-The default Webui password is admin/1423
+(2) Provision user equipment (UE) IMSI (see ueransim/ueransim-ue-configmap.yaml, default IMSI is 208930000000001) to 5gcore so your UE registration (i.e. running ueransim UE mode) will be allowed. <br>
+The default Webui password is admin/1423 <br>
+
 ![alt text](https://raw.githubusercontent.com/fenar/cnvopen5gcore/main/pics/Open5GSWebUI.png)<br>
 
 ----
@@ -66,7 +67,7 @@ oc get secret openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.a
 [>>> Adding More Target Clusters as target deployment environment](https://gist.github.com/fenar/bd2348fbd8c1fe37955534e97e910de5)<br>
 
 ----
-## Wipeout
+## Uninstall
 (5) Use ./3-delete5gran.sh to wipe UERANSIM microservices deployment
 
 ----
