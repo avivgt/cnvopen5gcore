@@ -7,29 +7,30 @@ Background: <br>
 
 ----
 Prerequisites: <br>
-(i) [OCP with OSM installed and configured](https://docs.openshift.com/container-platform/4.7/service_mesh/v1x/installing-ossm.html)<br>
+(i) [OCP with OSM installed and configured](https://docs.openshift.com/container-platform/4.15/service_mesh/v1x/installing-ossm.html)<br>
 (ii) [Enable SCTP on OCP Reference](https://docs.openshift.com/container-platform/4.7/networking/using-sctp.html#nw-sctp-enabling_using-sctp)
 ```
 oc create -f enablesctp.yaml
 
 ```
-Wait for machine config to be applied on all worker nodes and all worker nodes come back in to ready state. Check with; 
+Wait for machine-config to be applied on all worker nodes and all worker nodes come back into ready state. Check with; 
 ```
 oc get nodes
 ```
 
 ----
 ## [Deploying Open5GCore] 
-(1) Run 0-deploy5gcore.sh that creates the project, add project to service mesh member-roll, provisions necessary role bindings , deploy helm-charts for you and also also creates virtual istio ingress for webui. <br>
+(1) Run 0-deploy5gcore.sh that creates the project. Add the project to the service mesh member-roll, provisions necessary role bindings, deploy helm-charts for you, and also create virtual istio ingress for Webui. <br>
 ![alt text](https://raw.githubusercontent.com/fenar/cnvopen5gcore/main/pics/Open5GCoreServiceMesh2.png)<br>
 
 ----
-(2) Provision user equipment (UE) imsi (see ueransim/ueransim-ue-configmap.yaml, defaul imsi is 208930000000001) to 5gcore so your ue registration (ie running ueransim ue mode) will be allowed.
+(2) Provision user equipment (UE) IMSI (see ueransim/ueransim-ue-configmap.yaml, default IMSI is 208930000000001) to 5gcore so your UE registration (i.e. running ueransim UE mode) will be allowed.
+The default Webui password is admin/1423
 ![alt text](https://raw.githubusercontent.com/fenar/cnvopen5gcore/main/pics/Open5GSWebUI.png)<br>
 
 ----
 ## [Running EURANSIM as a pod with multiple containers inside] 
-(3) Use 1-deploy5gran.sh that creates the config maps and ueransim deployment with one pod that has multiple containers (gnb, ue as separate containers inside same pod) <br>
+(3) Use 1-deploy5gran.sh that creates the config maps and UERANSIM deployment with one pod that has multiple containers (GnB, UE as separate containers inside the same pod) <br>
 ![alt text](https://raw.githubusercontent.com/fenar/cnvopen5gcore/main/pics/ueransim-pod.png)<br>
 
 ![alt text](https://raw.githubusercontent.com/fenar/cnvopen5gcore/main/pics/ueransim-gnb-cont.png)<br>
@@ -39,9 +40,9 @@ oc get nodes
 ----
 ## 5GCore with GitOps
 
-(4) If you like to leverage GitOps on your deployment you can use Red Hat Openshift GitOps operator and simply point this repo with 5gcore helm path and kickstart your deployment.
+(4) If you like to leverage GitOps on your deployment you can use the Red Hat Openshift GitOps operator and simply point this repo with 5gcore helm path and kickstart your deployment.
 Ref: [Red Hat GitOps Operator](https://catalog.redhat.com/software/operators/detail/5fb288c70a12d20cbecc6056)<br>
-If you fail using ArgoCD due to permission errors on your project, worth to check/add necessary role to your argocd controller.
+If you fail to use ArgoCD due to permission errors on your project, it is worth checking/adding the necessary role to your ArgoCD controller.
 ```
 oc adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller -n openshift-gitops
 ```
@@ -56,16 +57,17 @@ ArgoCD 5GRAN
 
 ----
 
-PS: If you wonder from where to get the default ArgoCD admin password, here it is :-). <br>
+PS: If you wonder where to get the default ArgoCD admin password, here it is :-). <br>
 ![alt text](https://raw.githubusercontent.com/fenar/cnvopen5gcore/main/pics/argopasswd.png)<br>
-Alternatively you can get at cli:
+Alternatively, you can get at cli:
 ```
 oc get secret openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d
 ```
 [>>> Adding More Target Clusters as target deployment environment](https://gist.github.com/fenar/bd2348fbd8c1fe37955534e97e910de5)<br>
 
 ----
-(5) Use ./3-delete5gran.sh to wipe ueransim microservices deployment
+## Wipeout
+(5) Use ./3-delete5gran.sh to wipe UERANSIM microservices deployment
 
 ----
 
